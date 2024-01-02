@@ -43,6 +43,8 @@ import {
   ensureGlobalVariants
 } from "@plasmicapp/react-web";
 import Button2 from "../../Button2"; // plasmic-import: VsjdazCNMjvy/component
+import { RichTable } from "@plasmicpkgs/plasmic-rich-components/skinny/rich-table";
+import { tableHelpers as RichTable_Helpers } from "@plasmicpkgs/plasmic-rich-components/skinny/rich-table";
 import { Fetcher } from "@plasmicapp/react-web/lib/data-sources";
 
 import { useScreenVariants as useScreenVariantslgOdZg8BBufS } from "./PlasmicGlobalVariant__Screen"; // plasmic-import: lgOdZG8bBufS/globalVariant
@@ -76,6 +78,7 @@ export type PlasmicHomepage__OverridesType = {
   button?: p.Flex<"button">;
   section?: p.Flex<"section">;
   h1?: p.Flex<"h1">;
+  table?: p.Flex<typeof RichTable>;
   columns?: p.Flex<"div">;
 };
 
@@ -115,6 +118,52 @@ function PlasmicHomepage__RenderFunc(props: {
   let [$queries, setDollarQueries] = React.useState<
     Record<string, ReturnType<typeof usePlasmicDataOp>>
   >({});
+  const stateSpecs: Parameters<typeof p.useDollarState>[0] = React.useMemo(
+    () => [
+      {
+        path: "table.selectedRowKey",
+        type: "private",
+        variableType: "text",
+        initFunc: ({ $props, $state, $queries, $ctx }) => undefined,
+
+        onMutate: p.generateOnMutateForSpec("selectedRowKey", RichTable_Helpers)
+      },
+      {
+        path: "table.selectedRow",
+        type: "private",
+        variableType: "object",
+        initFunc: ({ $props, $state, $queries, $ctx }) => undefined,
+
+        onMutate: p.generateOnMutateForSpec("selectedRow", RichTable_Helpers)
+      },
+      {
+        path: "table.selectedRows",
+        type: "private",
+        variableType: "array",
+        initFunc: ({ $props, $state, $queries, $ctx }) => undefined,
+
+        onMutate: p.generateOnMutateForSpec("selectedRows", RichTable_Helpers)
+      },
+      {
+        path: "table.selectedRowKeys",
+        type: "private",
+        variableType: "array",
+        initFunc: ({ $props, $state, $queries, $ctx }) => undefined,
+
+        onMutate: p.generateOnMutateForSpec(
+          "selectedRowKeys",
+          RichTable_Helpers
+        )
+      }
+    ],
+    [$props, $ctx, $refs]
+  );
+  const $state = p.useDollarState(stateSpecs, {
+    $props,
+    $ctx,
+    $queries: $queries,
+    $refs
+  });
 
   const new$Queries: Record<string, ReturnType<typeof usePlasmicDataOp>> = {
     query: usePlasmicDataOp(() => {
@@ -447,6 +496,100 @@ function PlasmicHomepage__RenderFunc(props: {
                 </React.Fragment>
               </React.Fragment>
             </div>
+            {(() => {
+              const child$Props = {
+                className: classNames("__wab_instance", sty.table),
+                data: (() => {
+                  try {
+                    return $queries.query;
+                  } catch (e) {
+                    if (
+                      e instanceof TypeError ||
+                      e?.plasmicType === "PlasmicUndefinedDataError"
+                    ) {
+                      return undefined;
+                    }
+                    throw e;
+                  }
+                })(),
+                onRowSelectionChanged: async (...eventArgs: any) => {
+                  p.generateStateOnChangePropForCodeComponents(
+                    $state,
+                    "selectedRowKey",
+                    ["table", "selectedRowKey"],
+                    RichTable_Helpers
+                  ).apply(null, eventArgs);
+                  p.generateStateOnChangePropForCodeComponents(
+                    $state,
+                    "selectedRow",
+                    ["table", "selectedRow"],
+                    RichTable_Helpers
+                  ).apply(null, eventArgs);
+                  p.generateStateOnChangePropForCodeComponents(
+                    $state,
+                    "selectedRows",
+                    ["table", "selectedRows"],
+                    RichTable_Helpers
+                  ).apply(null, eventArgs);
+                  p.generateStateOnChangePropForCodeComponents(
+                    $state,
+                    "selectedRowKeys",
+                    ["table", "selectedRowKeys"],
+                    RichTable_Helpers
+                  ).apply(null, eventArgs);
+                },
+                scopeClassName: sty["table__instance"],
+                selectedRowKey: p.generateStateValueProp($state, [
+                  "table",
+                  "selectedRowKey"
+                ]),
+                selectedRowKeys: p.generateStateValueProp($state, [
+                  "table",
+                  "selectedRowKeys"
+                ]),
+                themeResetClassName: classNames(
+                  projectcss.root_reset,
+                  projectcss.root_reset_tags,
+                  projectcss.plasmic_default_styles,
+                  projectcss.plasmic_mixins,
+                  projectcss.plasmic_tokens,
+                  plasmic_antd_5_hostless_css.plasmic_tokens,
+                  plasmic_plasmic_rich_components_css.plasmic_tokens
+                )
+              };
+              p.initializeCodeComponentStates(
+                $state,
+                [
+                  {
+                    name: "selectedRowKey",
+                    plasmicStateName: "table.selectedRowKey"
+                  },
+                  {
+                    name: "selectedRow",
+                    plasmicStateName: "table.selectedRow"
+                  },
+                  {
+                    name: "selectedRows",
+                    plasmicStateName: "table.selectedRows"
+                  },
+                  {
+                    name: "selectedRowKeys",
+                    plasmicStateName: "table.selectedRowKeys"
+                  }
+                ],
+                [],
+                RichTable_Helpers ?? {},
+                child$Props
+              );
+
+              return (
+                <RichTable
+                  data-plasmic-name={"table"}
+                  data-plasmic-override={overrides.table}
+                  {...child$Props}
+                />
+              );
+            })()}
           </section>
           <div className={classNames(projectcss.all, sty.freeBox__tGavm)}>
             <p.Stack
@@ -887,10 +1030,11 @@ function PlasmicHomepage__RenderFunc(props: {
 }
 
 const PlasmicDescendants = {
-  root: ["root", "button", "section", "h1", "columns"],
+  root: ["root", "button", "section", "h1", "table", "columns"],
   button: ["button"],
-  section: ["section", "h1"],
+  section: ["section", "h1", "table"],
   h1: ["h1"],
+  table: ["table"],
   columns: ["columns"]
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
@@ -901,6 +1045,7 @@ type NodeDefaultElementType = {
   button: "button";
   section: "section";
   h1: "h1";
+  table: typeof RichTable;
   columns: "div";
 };
 
@@ -967,6 +1112,7 @@ export const PlasmicHomepage = Object.assign(
     button: makeNodeComponent("button"),
     section: makeNodeComponent("section"),
     h1: makeNodeComponent("h1"),
+    table: makeNodeComponent("table"),
     columns: makeNodeComponent("columns"),
 
     // Metadata about props expected for PlasmicHomepage
